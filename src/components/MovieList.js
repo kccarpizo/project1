@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import {useState, useEffect} from 'react'
 import MovieListItem from './MovieListItem'
 import '../assets/css/bootstrap.css';
 import movieContext from "../context/MovieContext";
@@ -7,14 +7,23 @@ import movieContext from "../context/MovieContext";
 
 
 const MovieList = () => {
-    const {movies2,setMovies2} = useContext(movieContext);
+    const [movies, setMovies] = useState([]);
+
+        useEffect(() => {
+
+
+        fetch ('http://localhost:8080/movies')
+        .then(res=>res.json())
+        .then(data => {console.log(data.bMessage); setMovies(data.bMessage)})
+
+    }, [])
     
     
     return (
         <div className="movie-container">
             
-            {movies2.map((movie)=>(
-                 <MovieListItem key={movie.id} key={movie.id} title={movie.title} imgPath={movie.imgPath}/> ))}
+            {movies.map((movie)=>(
+                 <MovieListItem key={movie.id} key={movie.id} title={movie.title} imgPath={movie.sm}/> ))}
             
         </div>
     )
