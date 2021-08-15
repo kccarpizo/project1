@@ -1,13 +1,41 @@
-import React from 'react'
+import React,{useState}from 'react'
 import {TextField, Button, Grid} from '@material-ui/core';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import '../assets/css/bootstrap.css';
 
 const Register = () => {
+
+    const [dQuest, setdQuest] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+  });
+
+  const submitForm = (event) => {
+      event.preventDefault();
+
+      fetch ("http://localhost:8080/users",{
+        method: "POST",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dQuest)
+
+      })
+      .then(res=>res.json())
+      .then(data => {
+        alert("Sucessfully added");
+        
+      })
+      
+
+  }
+
     return (
         <div className="register">
             <div className="sign">
-            <form className="form">
+            <form className = "form" action="/" method = "POST" onSubmit={submitForm}>
                 <Grid > 
                         Create a New Account
                 </Grid>
@@ -18,6 +46,12 @@ const Register = () => {
                             variant="outlined"
                             color="secondary"
                             required
+                            value = {dQuest.firstName} onChange = {(event) => {
+
+                                setdQuest({
+                                  ...dQuest,
+                                  firstName:event.target.value
+                                })}}
                         />
                 </Grid>
                 <Grid>
@@ -26,6 +60,12 @@ const Register = () => {
                             variant="outlined"
                             color="secondary"
                             required
+                            value = {dQuest.lastName} onChange = {(event) => {
+
+                                setdQuest({
+                                  ...dQuest,
+                                  lastName:event.target.value
+                                })}}
                         />
                     
                 </Grid>
@@ -35,6 +75,12 @@ const Register = () => {
                             variant="outlined"
                             color="secondary"
                             required
+                            value = {dQuest.email} onChange = {(event) => {
+
+                                setdQuest({
+                                  ...dQuest,
+                                  email:event.target.value
+                                })}}
                         />
                     </Grid>
                     <Grid>
@@ -44,6 +90,12 @@ const Register = () => {
                                 variant="outlined"
                                 color="secondary"
                                 required
+                                value = {dQuest.password} onChange = {(event) => {
+
+                                    setdQuest({
+                                      ...dQuest,
+                                      password:event.target.value
+                                    })}}
                                 
                             />
                         
