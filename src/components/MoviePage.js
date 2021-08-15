@@ -1,33 +1,50 @@
+import {useState, useEffect} from 'react'
+import MoviePage from './MoviePage'
+import {useParams} from "react-router-dom";
 
-import { Button } from 'reactstrap';
-import '../assets/css/bootstrap.css';
+const MoviePageList = () => {
+
+    const [movie, setMovies] = useState({
+        title:"",
+        sm:"",
+        description :"",
+        price:"" ,
+        priceOut:""
+});
+
+    const {id} = useParams();
 
 
-const MoviePage = ({id,title, rent, buy, imgPath, overview}) => {
+    useEffect(()=>{
+
+        
+        fetch(`http://localhost:8080/movies/${id}`)
+        .then((res)=>{
+  
+          return res.json()
+        })
+        .then(json=>{    
+              setMovies(json);
+        })
+        .catch((err)=>{
+            console.log(`Error ${err}`);
+        })
+  
+  
+    },[])
+
     
     
-
+   
     return (
-        <div>
-        <div className="hero">
-            <img src={imgPath} alt=""/>
-            <div className="title">
-                <h3>{title}</h3>
-                <span className="desc">{overview}</span>
-                <div className="button">
-                <Button color="danger">
-                    <span>{rent}</span>
-                </Button>
-                <Button>
-                    <span>{buy}</span>
-                </Button>
-            </div>
-            </div>
-            
-        </div>
-
+        <div className ="container">
+            <h2>Title: {movie.title} </h2>
+            <p><img src={movie.sm} /> </p>
+            <p>{movie.description}</p> 
+            <p>rent: {movie.price} </p>
+            <p>buy: {movie.priceOut}</p>
         </div>
     )
 }
 
-export default MoviePage
+export default MoviePageList
